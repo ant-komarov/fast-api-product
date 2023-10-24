@@ -40,7 +40,7 @@ def get_single_product(product_id: int, db: Session = Depends(get_db)):
 @router.put("/{product_id}/", response_model=schemas.Product)
 def update_category(
         product_id: int,
-        product_update: dict,
+        product_update: schemas.ProductUpdate,
         db: Session = Depends(get_db)
 ):
     existing_product = crud.get_single_product(db=db, product_id=product_id)
@@ -50,7 +50,7 @@ def update_category(
     updated_product = crud.update_product(
         db=db,
         product=existing_product,
-        product_update=product_update
+        product_update=product_update.model_dump()
     )
     return updated_product
 
