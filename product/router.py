@@ -47,18 +47,18 @@ def update_category(
     if existing_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    updated_category = crud.update_product(
+    updated_product = crud.update_product(
         db=db,
         product=existing_product,
         product_update=product_update
     )
-    return updated_category
+    return updated_product
 
 
 @router.delete("/{product_id}/")
 def delete_product(product_id: int, db: Session = Depends(get_db)):
-    category = crud.get_single_product(db=db, product_id=product_id)
-    if category:
+    product = crud.get_single_product(db=db, product_id=product_id)
+    if product:
         crud.delete_product(db=db, product_id=product_id)
     else:
         raise HTTPException(status_code=404, detail="Product not found")

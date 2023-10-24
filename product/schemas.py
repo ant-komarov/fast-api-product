@@ -17,11 +17,11 @@ class ProductCreate(ProductBase):
 
 
 class ProductUpdate(ProductBase):
-    name: str = None
-    description: str = None
-    price: float = None
-    quantity: int = None
-    category_id: int = None
+    name: str
+    description: str
+    price: float
+    quantity: int
+    category_id: int
 
 
 class Product(ProductBase):
