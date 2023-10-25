@@ -22,6 +22,6 @@ class Product(Base):
     price = Column(DECIMAL, nullable=True)
     created_at = Column(DATETIME, nullable=False)
     quantity = Column(Integer, nullable=False, default=0)
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
 
     category = relationship("Category", back_populates="products")

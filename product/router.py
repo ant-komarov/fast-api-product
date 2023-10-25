@@ -38,7 +38,7 @@ def get_single_product(product_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{product_id}/", response_model=schemas.Product)
-def update_category(
+def update_product(
         product_id: int,
         product_update: schemas.ProductUpdate,
         db: Session = Depends(get_db)
