@@ -8,10 +8,7 @@ router = APIRouter(prefix="/products")
 
 
 @router.post("/", response_model=schemas.Product)
-def create_category(
-        product: schemas.ProductCreate,
-        db: Session = Depends(get_db)
-):
+def create_category(product: schemas.ProductCreate, db: Session = Depends(get_db)):
     db_category = crud.get_product_by_name(db=db, name=product.name)
 
     if db_category:
@@ -39,18 +36,16 @@ def get_single_product(product_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{product_id}/", response_model=schemas.Product)
 def update_product(
-        product_id: int,
-        product_update: schemas.ProductUpdate,
-        db: Session = Depends(get_db)
+    product_id: int,
+    product_update: schemas.ProductCreate,
+    db: Session = Depends(get_db),
 ):
     existing_product = crud.get_single_product(db=db, product_id=product_id)
     if existing_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
 
     updated_product = crud.update_product(
-        db=db,
-        product=existing_product,
-        product_update=product_update.model_dump()
+        db=db, product=existing_product, product_update=product_update.model_dump()
     )
     return updated_product
 
