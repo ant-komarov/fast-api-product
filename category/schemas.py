@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CategoryBase(BaseModel):
-    name: str
+    name: str = Field(examples=["Category"])
 
 
 class CategoryCreate(CategoryBase):
