@@ -60,5 +60,6 @@ def delete_category(category_id: int, db: Session = Depends(get_db)):
     category = crud.get_category(db=db, category_id=category_id)
     if category:
         crud.delete_category(db=db, category_id=category_id)
+        return {"message": "category successfully deleted"}
     else:
         raise HTTPException(status_code=404, detail="Category not found")

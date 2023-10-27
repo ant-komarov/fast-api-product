@@ -1,17 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from product import schemas, crud
+from category import crud as c_crud
 from db.dependencies import get_db
 
 router = APIRouter(prefix="/products")
 
 
 @router.post("/", response_model=schemas.Product)
-def create_category(product: schemas.ProductCreate, db: Session = Depends(get_db)):
-    db_category = crud.get_product_by_name(db=db, name=product.name)
+def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
+    db_product = crud.get_product_by_name(db=db, name=product.name)
+    db_category = c_crud.get_category(db=db, category_id=product.category_id)
 
-    if db_category:
+    if db_category is None:
+        raise HTTPException(
+            status_code=400, detail=f"Category with id: {product.category_id} does not exists"
+        )
+
+    if db_product:
         raise HTTPException(
             status_code=400, detail="Product with such name already exists"
         )
@@ -55,5 +62,6 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     product = crud.get_single_product(db=db, product_id=product_id)
     if product:
         crud.delete_product(db=db, product_id=product_id)
+        return {"message": "product successfully deleted"}
     else:
         raise HTTPException(status_code=404, detail="Product not found")
